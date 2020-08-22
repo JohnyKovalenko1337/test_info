@@ -1,15 +1,34 @@
 const express = require('express');
-
-const app = express();
+const bodyParser = require('body-parser');
 
 const enviroment = require('../enviroment');
 
-const port = enviroment.database || 3000;
+const userRoutes = require('./routes/user-routes');
 
-const adminRoutes = require('./routes/admin-routes');
-const userRoutes = require('./routes/user-routes')
-app.use('');
+
+const port = enviroment.database || 3000;
+const app = express();
+
+app.use(bodyParser.json());
+
+app.use((req,res,next)=>{
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader(
+        'Access-Control-Allow-Headers',
+        'Origin, X-Requested-With, Content-Type, Accept, Authorization'
+    );
+    res.setHeader('Access-Control-Allow-Methods', 'POST, GET');
+    next();
+});
+
+app.use('/server',userRoutes);
+
+
+app.use((req, res, next) => {
+    return res.json({ message: 'Couldnt find this route' });
+})
+
 
 app.listen(port, ()=>{
-    console.log('client connected');
+    console.log('client connected to server');
 });
