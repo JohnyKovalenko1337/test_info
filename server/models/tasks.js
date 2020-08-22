@@ -18,10 +18,10 @@ const getTaskFromFile = cb => {
 };
 
 module.exports = class Task {
-  constructor(title, description, userId) {
+  constructor(title, description, creatorId) {
     this.title = title;
     this.description = description;
-    this.userId = userId;
+    this.creatorId = creatorId;
   }
 
   save() {
