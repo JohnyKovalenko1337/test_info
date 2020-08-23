@@ -1,12 +1,10 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 
-const enviroment = require('../enviroment');
-
 const userRoutes = require('./routes/user-routes');
 
 
-const port = enviroment.database || 3000;
+const port = 3000;
 const app = express();
 
 app.use(bodyParser.json());
@@ -30,5 +28,5 @@ app.use((req, res, next) => {
 
 
 app.listen(port, ()=>{
-    console.log('client connected to server');
+    console.log('server');
 });
