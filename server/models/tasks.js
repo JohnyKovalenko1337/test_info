@@ -22,6 +22,7 @@ module.exports = class Task {
     this.title = title;
     this.description = description;
     this.creatorId = creatorId;
+    this.status = 'Not Started';
   }
 
   save() {
