@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 
 const userRoutes = require('./routes/user-routes');
-
+const taskRoutes = require('./routes/task-routes');
 
 const port = 3000;
 const app = express();
@@ -20,7 +20,7 @@ app.use((req,res,next)=>{
 });
 
 app.use('/server',userRoutes);
-
+app.use('/server',taskRoutes);
 
 app.use((req, res, next) => {
     return res.json({ message: 'Couldnt find this route' });
