@@ -12,6 +12,7 @@ const options = {
 
 exports.loginCheck = (login) => {
 
+
     options.path = '/server/getUser';
     options.method = 'POST';
 
@@ -20,22 +21,27 @@ exports.loginCheck = (login) => {
     });
 
 
+    return new Promise((resolve, reject) => {
+        http.request(options, (res) => {
+            let check;
+            res.setEncoding('utf8');
+            res.on('data', (chunk) => {
+                const data = JSON.parse(chunk)
+                if (data.user === undefined) {
+                    check = false;
+                }
+                else {
+                    check = true;
+                }
+            });
+            res.on('end', () => {
+                resolve(check);
+            })
+        })
+            .on('error', reject)
+            .end(postData);
+    })
 
-    const req = http.request(options, (res) => {
-        res.setEncoding('utf8');
-        res.on('data', (chunk) => {
-            const data = JSON.parse(chunk)
-            if (!data.user) {
-                return false
-            }
-            else{
-                return true;
-            }
-
-        });
-    });
-    req.write(postData);
-    req.end();
 }
 
 
@@ -43,19 +49,35 @@ exports.signup = (login, password) => {
     options.path = '/server/signup';
     options.method = 'POST';
 
-
     const postData = JSON.stringify({
         'login': login,
         'password': password
     });
-
-
-
     const req = http.request(options, (res) => {
         res.setEncoding('utf8');
         res.on('data', (chunk) => {
         });
-    });
-    req.write(postData);
-    req.end();
+    }).end(postData);
 };
+
+exports.user_login = (login) => {
+    options.path = '/server/getUser';
+    options.method = 'POST';
+
+    const postData = JSON.stringify({
+        'login': login
+    });
+
+
+    return new Promise((resolve, reject) => {
+        http.request(options, (res) => {
+            res.setEncoding('utf8');
+            res.on('data', (chunk) => {
+                const data = JSON.parse(chunk)
+                resolve(data.user);
+            });
+        }).end(postData)
+            .on('error', reject);
+    });
+
+}
