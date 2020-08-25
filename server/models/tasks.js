@@ -18,11 +18,10 @@ const getTaskFromFile = cb => {
 };
 
 module.exports = class Task {
-  constructor(title, description, creatorId) {
+  constructor(title, description, creator) {
     this.title = title;
     this.description = description;
-    this.creatorId = creatorId;
-    this.status = 'Not Started';
+    this.creator = creator;
   }
 
   save() {
@@ -38,6 +37,14 @@ module.exports = class Task {
     getTaskFromFile(cb);
   }
 
+  static findByCreator(creator, cb) {
+    getTaskFromFile((tasks) => {
+      const creatorTasks = tasks.filter((task) => task.creator === creator)
+      cb(creatorTasks);
+
+    });
+  }
+
   static deleteById(id) {
     getTaskFromFile(tasks => {
       tasks.splice(id, 1);
@@ -45,13 +52,8 @@ module.exports = class Task {
   }
 
   static updateById(id, body) {
-    getTaskFromFile(tasks => {
-      if (!tasks[id]) {
-        console.log('no task with this id')
-      }
-      else {
-        tasks[id] = body;
-      }
+    getTaskFromFile(tasks => {  
+        tasks[id].title = title;
     });
   }
 };
