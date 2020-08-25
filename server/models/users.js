@@ -34,12 +34,17 @@ module.exports = class User {
     });
   }
 
-  static findByName(username, password, cb) {
-    getUserFromFile(users => {
-      let id = users.indexOf({ username: username });
-      if (id > -1) {
-        return users[id];
-      }
+  static fetchAll(cb) {
+    getUserFromFile(cb);
+  }
+
+  static findByName(username, cb) {
+    getUserFromFile((users) => {
+      const user = users.find((user) => user.username === username )
+      cb(user);
+      //return user;
+
+
     });
   }
 
