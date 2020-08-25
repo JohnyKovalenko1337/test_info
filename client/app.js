@@ -2,8 +2,9 @@
 
 const readline = require('readline');
 const { loginCheck, signup, user_login } = require('./requests/auth');
+const { addTask, myTasks } = require('./requests/task');
 const { Auth } = require('./cli-queries/auth');
-
+const { Task } = require('./cli-queries/task');
 const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout,
@@ -14,7 +15,7 @@ const rl = readline.createInterface({
 
 console.log('                | Welcome to ToDo app |');
 let loggined = false;
-
+let currentUser;
 // ========================== commands for not authorized user ===================================
 const commands1 = {
   menu() {
@@ -39,6 +40,7 @@ const commands1 = {
                   if (user.password == password) {
                     console.log(" Authorized !")
                     loggined = true;
+                    currentUser = login;
                   }
                   else {
                     console.log("Wrong password, repeat operation and input correct password! ")
@@ -73,7 +75,7 @@ const commands1 = {
 
                   console.log(" Authorized !")
                   loggined = true;
-
+                  currentUser = login;
                   rl.prompt();
                 }
               );
@@ -91,10 +93,39 @@ const commands1 = {
 
 const commands2 = {
   menu() {
+    console.clear();
     console.log('Available commands: ', Object.keys(commands2).join(', '));
+  },
+  create() {
+    let title;
+    let description;
+    console.clear()
+    rl.question(Task.title,
+      (line) => {
+        rl.prompt();
+        title = line;
+        rl.question(Task.description,
+          (line) => {
+            rl.prompt();
+            description = line;
+            addTask(title, description, currentUser);
+            console.log('Task has been added');
+            rl.prompt();
+          });
+      });
+  },
+  mytasks() {
+    myTasks(currentUser)
+      .then(tasks => {
+        console.table(tasks);
+      })
+      .then(()=>{
+        rl.prompt();
+      })
   },
   logout() {
     loggined = false;
+    currentUser = undefined;
     console.log('Now you are logout, type "menu" for available commands');
     rl.prompt();
 
