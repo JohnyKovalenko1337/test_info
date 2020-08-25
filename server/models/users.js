@@ -22,15 +22,26 @@ module.exports = class User {
     this.username = username;
     this.password = password;
     this.type = 'user';
-    this.tasks = [];
   }
 
   save() {
     getUserFromFile(users => {
-      users.push(this);
-      fs.writeFile(p, JSON.stringify(users), err => {
-        console.log(err);
-      });
+      if (this.username) {
+        const existingUser = users.findIndex(use =>  use.username === this.username);
+        console.log(existingUser);
+        const updatedUsers = [...users];
+        updatedUsers[existingUser] = this;
+        fs.writeFile(p, JSON.stringify(updatedUsers), err => {
+          console.log(err);
+        });
+      }
+      else {
+        users.push(this);
+        fs.writeFile(p, JSON.stringify(users), err => {
+          console.log(err);
+        });
+      }
+
     });
   }
 
@@ -40,12 +51,11 @@ module.exports = class User {
 
   static findByName(username, cb) {
     getUserFromFile((users) => {
-      const user = users.find((user) => user.username === username )
+      const user = users.find((user) => user.username === username)
       cb(user);
-      //return user;
-
 
     });
   }
+
 
 };
