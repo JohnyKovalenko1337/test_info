@@ -1,15 +1,17 @@
 const User = require('../models/users');
 
-exports.userGet = async (req, res, next) => {
+exports.userGet = (req, res, next) => {
     console.log(req.body);
     const username = req.body.login;
-    const user = await User.findByName(username);
+    User.findByName(username, user => {
+            console.log(user);
+            if (!user) {
+                console.log('no user');
+                return res.json({ message: "no user with this username" });
+            }
+            return res.json({ user: user });
+        })
 
-    if (!user) {
-        console.log('no user');
-        return res.json({ message: "no user with this username" });
-    }
-    return res.json({ user: user });
 };
 
 exports.signup = (req, res, next) => {
