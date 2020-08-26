@@ -2,7 +2,7 @@
 
 const readline = require('readline');
 const { loginCheck, signup, user_login } = require('./requests/auth');
-const { addTask, myTasks } = require('./requests/task');
+const { addTask, myTasks, updateMyTask, deleteMyTask } = require('./requests/task');
 const { Auth } = require('./cli-queries/auth');
 const { Task } = require('./cli-queries/task');
 const rl = readline.createInterface({
@@ -119,9 +119,73 @@ const commands2 = {
       .then(tasks => {
         console.table(tasks);
       })
-      .then(()=>{
+      .then(() => {
         rl.prompt();
       })
+  },
+  update() {
+    let id;
+    let newTitle;
+    let newDescription;
+    console.clear();
+    myTasks(currentUser)
+      .then(tasks => {
+        console.table(tasks);
+
+        rl.question("input index of your task\n", (line) => {
+          rl.prompt();
+
+          id = line;
+          if (tasks[id]) {
+            rl.question("Input new title for your task\n", (line) => {
+              rl.prompt();
+
+              newTitle = line;
+
+              rl.question("Input new description for your task\n", (line) => {
+                rl.prompt();
+                newDescription = line;
+                updateMyTask(currentUser, id, newTitle, newDescription)
+                  .then(() => {
+                    console.log('Task has been updated');
+
+                    rl.prompt();
+                  })
+
+              });
+            });
+          } else {
+            console.log('No task with this index found');
+            rl.prompt();
+          }
+        })
+
+      })
+  },
+  delete(){
+    let id;
+    console.clear();
+    myTasks(currentUser)
+      .then(tasks => {
+        console.table(tasks);
+
+        rl.question("input index of your task\n", (line) => {
+          rl.prompt();
+
+          id = line;
+          if (tasks[id]) {
+            deleteMyTask(currentUser, id)
+            .then(()=>{
+              console.log('Task has been deleted');
+              rl.prompt();
+            })
+          }
+          else{
+            console.log('No task with this index found');
+            rl.prompt();
+          }
+        });
+      });
   },
   logout() {
     loggined = false;
@@ -133,12 +197,9 @@ const commands2 = {
 
 };
 
-if (loggined) {
-  console.log('Available commands: ', Object.keys(commands2).join(', '))
-}
-else {
-  console.log('Available commands: ', Object.keys(commands1).join(', '))
-}
+
+console.log('Available commands: ', Object.keys(commands1).join(', '))
+
 
 rl.prompt();
 
