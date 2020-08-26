@@ -18,7 +18,8 @@ const getTaskFromFile = cb => {
 };
 
 module.exports = class Task {
-  constructor(title, description, creator) {
+  constructor(id, title, description, creator) {
+    this.id = id;
     this.title = title;
     this.description = description;
     this.creator = creator;
@@ -26,10 +27,22 @@ module.exports = class Task {
 
   save() {
     getTaskFromFile(tasks => {
-      tasks.push(this);
-      fs.writeFile(p, JSON.stringify(tasks), err => {
-        console.log(err);
-      });
+      if (this.id) {
+        const existingTask = tasks.findIndex(task => task.id === this.id);
+        console.log(existingTask);
+        const updatedTasks = [...tasks];
+        updatedTasks[existingTask] = this;
+        fs.writeFile(p, JSON.stringify(updatedTasks), err => {
+          console.log(err);
+        });
+      }
+      else {
+        this.id = Math.random().toString();
+        tasks.push(this);
+        fs.writeFile(p, JSON.stringify(tasks), err => {
+          console.log(err);
+        });
+      }
     });
   }
 
@@ -47,13 +60,11 @@ module.exports = class Task {
 
   static deleteById(id) {
     getTaskFromFile(tasks => {
-      tasks.splice(id, 1);
+      const newTasks= tasks.filter(task => task.id !== id);
+      fs.writeFile(p, JSON.stringify(newTasks), err => {
+        console.log(err);
+      });
     });
   }
 
-  static updateById(id, body) {
-    getTaskFromFile(tasks => {  
-        tasks[id].title = title;
-    });
-  }
 };
