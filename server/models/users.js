@@ -26,23 +26,13 @@ module.exports = class User {
 
   save() {
     getUserFromFile(users => {
-      if (this.username) {
-        const existingUser = users.findIndex(use =>  use.username === this.username);
-        console.log(existingUser);
-        const updatedUsers = [...users];
-        updatedUsers[existingUser] = this;
-        fs.writeFile(p, JSON.stringify(updatedUsers), err => {
-          console.log(err);
-        });
-      }
-      else {
+    
         users.push(this);
         fs.writeFile(p, JSON.stringify(users), err => {
           console.log(err);
         });
-      }
+      });
 
-    });
   }
 
   static fetchAll(cb) {
