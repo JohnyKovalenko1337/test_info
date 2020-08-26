@@ -1,7 +1,4 @@
 const http = require('http');
-const { resolve } = require('path');
-const { rejects } = require('assert');
-
 
 const options = {
     hostname: 'localhost',
@@ -51,4 +48,46 @@ exports.myTasks = (username) => {
             .end(postData);
     })
 
+};
+
+
+
+exports.updateMyTask = (username, id, title, description) => {
+    options.path = '/server/updateById';
+    options.method = 'POST';
+    const postData = JSON.stringify({
+        'creator': username,
+        'title': title,
+        'description': description,
+        'id': id
+    });
+
+    return new Promise((resolve, reject) => {
+
+        http.request(options, (res) => {
+            res.on('data', (chunk) => {
+                resolve(chunk)
+             });
+        })
+            .end(postData);
+    })
+};
+
+exports.deleteMyTask = (username, id) => {
+    options.path = '/server/deleteById';
+    options.method = 'POST';
+    const postData = JSON.stringify({
+        'creator': username,
+        'id': id
+    });
+
+    return new Promise((resolve, reject) => {
+
+        http.request(options, (res) => {
+            res.on('data', (chunk) => {
+                resolve(chunk)
+             });
+        })
+            .end(postData);
+    })
 };
