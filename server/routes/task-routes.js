@@ -10,5 +10,8 @@ Router.post('/my-tasks', taskController.getMyTasks);
 Router.post('/updateById', taskController.updateById);
 Router.post('/deleteById', taskController.deleteById );
 
+Router.post('/admin/updateTask', taskController.updateAdminTask);
+Router.post('/admin/deleteTask', taskController.deleteAdminTask)
+
 
 module.exports = Router;
