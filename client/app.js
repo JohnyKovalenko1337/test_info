@@ -73,17 +73,20 @@ const commands1 = {
                 (pass) => {
                   password = pass;      //setting password if login is new
 
-                  signup(login, password);  // signing
+                  signup(login, password)   // signing
+                    .then(() => {
+                      console.log(" Authorized !");
 
-                  console.log(" Authorized !");
+                      loggined = true;
 
-                  loggined = true;
-
-                  user_login(login)     //getting user by login
-                    .then(user => {
-                      currentUser = user;     // and setting current user
-                      rl.prompt();
+                      user_login(login)     //getting user by login
+                        .then(user => {
+                          currentUser = user;     // and setting current user
+                          rl.prompt();
+                        })
                     })
+
+
                 });
             }
             if (check === true) {
@@ -270,7 +273,7 @@ const commands3 = {
 
           id = line;                          // getting id
           if (tasks[id]) {
-            deleteTask(id)          
+            deleteTask(id)
               .then(() => {
                 console.log('Task has been deleted');
                 rl.prompt();
