@@ -50,8 +50,6 @@ exports.myTasks = (username) => {
 
 };
 
-
-
 exports.updateMyTask = (username, id, title, description) => {
     options.path = '/server/updateById';
     options.method = 'POST';

@@ -1,6 +1,5 @@
 const http = require('http');
 
-
 const options = {
     hostname: 'localhost',
     port: 3000,
@@ -9,9 +8,7 @@ const options = {
     }
 };
 
-
 exports.loginCheck = (login) => {
-
 
     options.path = '/server/getUser';
     options.method = 'POST';
@@ -19,7 +16,6 @@ exports.loginCheck = (login) => {
     const postData = JSON.stringify({
         'login': login
     });
-
 
     return new Promise((resolve, reject) => {
         http.request(options, (res) => {
