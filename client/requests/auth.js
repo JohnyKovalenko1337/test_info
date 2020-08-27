@@ -49,11 +49,16 @@ exports.signup = (login, password) => {
         'login': login,
         'password': password
     });
-    const req = http.request(options, (res) => {
-        res.setEncoding('utf8');
-        res.on('data', (chunk) => {
-        });
-    }).end(postData);
+    return new Promise((resolve, reject) => {
+        http.request(options, (res) => {
+            res.setEncoding('utf8');
+            res.on('data', (chunk) => {
+                resolve(chunk);
+            });
+        })
+            .on('error', reject)
+            .end(postData);
+    })
 };
 
 exports.user_login = (login) => {
