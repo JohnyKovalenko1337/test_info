@@ -22,6 +22,12 @@ npm install
 
 1. node client/app to start CLI
 2. node server/server in another terminal to start the server
+## To login as an admin
+
+```bash
+    login = admin
+    pass = admin
+```    
 ## ScreenShots
 ### signup
 ![screen1](https://raw.githubusercontent.com/JohnyKovalenko1337/testik/jeenya/images_for%20deploy/infotest1.jpg)
