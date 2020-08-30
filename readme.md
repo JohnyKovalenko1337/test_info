@@ -40,5 +40,5 @@ npm install
 ### user tasks
 ![screen5](https://raw.githubusercontent.com/JohnyKovalenko1337/testik/jeenya/images_for%20deploy/infotech5.jpg)
 ## License
-
+![license](https://img.shields.io/github/license/JohnyKovalenko1337/test_info)
 MIT © [JohnyKovalenko1337](https://github.com/JohnyKovalenko1337)
